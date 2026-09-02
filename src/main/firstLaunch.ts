@@ -6,7 +6,7 @@
 
 import { app } from "electron";
 import { BrowserWindow } from "electron/main";
-import { copyFileSync, mkdirSync, readdirSync } from "fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync } from "fs";
 import { join } from "path";
 import { SplashProps } from "shared/browserWinProperties";
 import { STATIC_DIR } from "shared/paths";
@@ -58,20 +58,28 @@ export function createFirstLaunchTour() {
         if (data.autoStart) autoStart.enable();
 
         if (data.importSettings) {
-            const from = join(app.getPath("userData"), "..", "Vencord", "settings");
-            const to = join(DATA_DIR, "settings");
-            try {
-                const files = readdirSync(from);
-                mkdirSync(to, { recursive: true });
-
-                for (const file of files) {
-                    copyFileSync(join(from, file), join(to, file));
-                }
-            } catch (e) {
-                if (e instanceof Error && "code" in e && e.code === "ENOENT") {
-                    console.log("No Vencord settings found to import.");
-                } else {
-                    console.error("Failed to import Vencord settings:", e);
+            // Equibop only ever looked for a Vencord folder, so an existing
+            // Equicord install was never imported. Prefer Equicord, then Vencord,
+            // and bring the themes along with the settings.
+            const candidates = ["Equicord", "Vencord"].map(name => join(app.getPath("userData"), "..", name));
+            const source = candidates.find(dir => existsSync(join(dir, "settings")));
+            if (!source) {
+                console.log("No Equicord or Vencord settings found to import.");
+            } else {
+                for (const sub of ["settings", "themes"]) {
+                    const from = join(source, sub);
+                    const to = join(DATA_DIR, sub);
+                    try {
+                        const files = readdirSync(from);
+                        mkdirSync(to, { recursive: true });
+                        for (const file of files) {
+                            copyFileSync(join(from, file), join(to, file));
+                        }
+                    } catch (e) {
+                        if (!(e instanceof Error && "code" in e && e.code === "ENOENT")) {
+                            console.error(`Failed to import ${sub} from ${source}:`, e);
+                        }
+                    }
                 }
             }
         }
