@@ -1,7 +1,7 @@
 {
     "name": "santi.discord",
     "desktopName": "santi.discord",
-    "version": "3.2.2",
+    "version": "3.2.2-santi.1",
     "private": true,
     "description": "santi.discord is Equibop with santi.discord-core (Equicord + BetterTyping + TypingStyles) preinstalled",
     "keywords": [],
