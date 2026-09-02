@@ -2,9 +2,9 @@
 Name=Equibop
 GenericName=Internet Messenger
 Type=Application
-Exec=equibop %U
-Icon=org.equicord.equibop
+Exec=santi.discord %U
+Icon=online.xocat.santi.discord
 Categories=Network;InstantMessaging;Chat;
-Keywords=discord;vencord;electron;chatequibop;
+Keywords=discord;vencord;electron;chat;santi;
 MimeType=x-scheme-handler/discord;
-StartupWMClass=equibop
+StartupWMClass=santi.discord

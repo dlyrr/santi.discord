@@ -85,7 +85,7 @@ function initMenuBar(win: BrowserWindow) {
 
     const subMenu = [
         {
-            label: "About Equibop",
+            label: "About santi.discord",
             click: createAboutWindow
         },
         {
@@ -96,14 +96,14 @@ function initMenuBar(win: BrowserWindow) {
                 app.relaunch();
                 app.quit();
             },
-            toolTip: "Equibop will automatically restart after this operation"
+            toolTip: "santi.discord will automatically restart after this operation"
         },
         {
-            label: "Reset Equibop",
+            label: "Reset santi.discord",
             async click() {
                 await clearData(win);
             },
-            toolTip: "Equibop will automatically restart after this operation"
+            toolTip: "santi.discord will automatically restart after this operation"
         },
         {
             label: "Relaunch",
@@ -171,7 +171,7 @@ function initMenuBar(win: BrowserWindow) {
 
     const menuItems = [
         {
-            label: "Equibop",
+            label: "santi.discord",
             role: "appMenu",
             submenu: subMenu.filter(isTruthy)
         },
@@ -280,7 +280,7 @@ function initStaticTitle(win: BrowserWindow) {
 
     addSettingsListener("staticTitle", enabled => {
         if (enabled) {
-            win.setTitle("Equibop");
+            win.setTitle("santi.discord");
             win.on("page-title-updated", listener);
         } else {
             win.off("page-title-updated", listener);
@@ -376,7 +376,7 @@ function buildBrowserWindowOptions(): BrowserWindowConstructorOptions {
     }
 
     if (staticTitle) {
-        options.title = "Equibop";
+        options.title = "santi.discord";
     }
 
     if (process.platform === "darwin") {

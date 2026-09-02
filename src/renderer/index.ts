@@ -25,20 +25,20 @@ import type SettingsPlugin from "@equicord/types/plugins/_core/settings";
 import { VesktopSettingsIcon } from "shared/icons";
 
 VesktopLogger.log("read if cute :3");
-VesktopLogger.log(`Equibop v${VesktopNative.app.getVersion()}`);
+VesktopLogger.log(`santi.discord v${VesktopNative.app.getVersion()}`);
 
 const { customEntries, customSections } = Vencord.Plugins.plugins.Settings as any as typeof SettingsPlugin;
 
 customEntries.push({
     key: "equicord_equibop_settings",
-    title: "Equibop Settings",
+    title: "santi.discord Settings",
     Component: SettingsUi,
     Icon: VesktopSettingsIcon
 });
 
 customSections.push(() => ({
     section: "EquibopSettings",
-    label: "Equibop Settings",
+    label: "santi.discord Settings",
     element: SettingsUi,
     className: "vc-equibop-settings"
 }));

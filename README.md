@@ -1,109 +1,37 @@
-# Equibop [<img src="/static/icon.png" width="225" align="right" alt="Equibop">](https://github.com/Equicord/Equibop)
+# santi.discord
 
-[![Equicord](https://img.shields.io/badge/Equicord-grey?style=flat)](https://github.com/Equicord/Equicord)
-[![Tests](https://github.com/Equicord/Equibop/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/Equicord/Equibop/actions/workflows/test.yml)
-[![Discord](https://img.shields.io/discord/1173279886065029291.svg?color=768AD4&label=Discord&logo=discord&logoColor=white)](https://equicord.org/discord)
+A Discord desktop client, the way I want it: [Equibop](https://github.com/Equicord/Equibop) (Equicord's Vesktop) with
+[santi.discord-core](https://github.com/dlyrr/santi.discord-core) preinstalled, which is Equicord plus my own plugins:
 
-Equibop is a fork of [Vesktop](https://github.com/Vencord/Vesktop).
+- **BetterTyping**: cleans tracking parameters from links, rewrites them to embed-fixing mirrors (fxspotify, fxapplemusic, fxtwitter, ...),
+  turns bare domains into links, polishes wording and restyles your typing.
+- **TypingStyles**: lowercase, UPPERCASE, Title Case, Sentence case or aLtErNaTiNg for everything you send.
 
-You can join our [discord server](https://equicord.org/discord) for commits, changes, chat or even support.<br></br>
+Everything else is Equibop: lighter and faster than the official app, Linux screenshare with sound, no Discord access to your system.
 
-**Main features**:
-- Equicord preinstalled
-- Much more lightweight and faster than the official Discord app
-- Linux Screenshare with sound & wayland
-- Much better privacy, since Discord has no access to your system
+## How it fits together
 
-**Extra included changes**
+| Repo | Role |
+| --- | --- |
+| [santi.discord](https://github.com/dlyrr/santi.discord) (this) | The desktop app. Fork of Equibop. |
+| [santi.discord-core](https://github.com/dlyrr/santi.discord-core) | The client mod. Fork of Equicord with the plugins in `src/equicordplugins`. Every push rebuilds its `latest` release. |
 
-- Tray Customization with voice detection and notification badges
-- Command-line flags to toggle microphone and deafen status (Linux)
-- Custom Arguments from [this PR](https://github.com/Equicord/Equibop/pull/46)
-- arRPC-bun with debug logging support https://github.com/Creationsss/arrpc-bun
+On first launch the app downloads `equibop.asar` from santi.discord-core's `latest` release into its data folder, exactly the way
+Equibop downloads Equicord's. Equibop's own updater keeps the app itself current from this repo's releases.
 
-**Not fully Supported**:
-- Global Keybinds (Windows/macOS - use command-line flags on Linux instead)
+## Building
 
-## Equibop Arguments
-> [!NOTE]
-> For the full list of supported flags and how to apply them, see the
-[Tips & Tricks](https://equibop.org/wiki/linux/tips/) page on the wiki!
-
-### Quick reference
-
-| Flag                            | Description                             |
-|---------------------------------|-----------------------------------------|
-| `--ozone-platform=wayland`      | Force native Wayland                    |
-| `--ozone-platform=x11`          | Force XWayland                          |
-| `--no-sandbox`                  | Disable Chromium sandbox (use with caution) |
-| `--force_high_performance_gpu`  | Prefer discrete GPU                     |
-| `--start-minimized`             | Launch minimized to tray                |
-| `--toggle-mic`                  | Toggle mic (bind to shortcuts)          |
-| `--toggle-deafen`               | Toggle deafen (bind to shortcuts)       |
-| `--toggle-vad`                  | Toggle Voice Activity Detection (Voice Activity <-> Push To Talk) |
-
-### Persistent flags
-
-Add flags to `${XDG_CONFIG_HOME}/equibop-flags.conf` — one per line, lines starting with `#` are comments.
-
-## Installing
-Check the [Releases](https://github.com/Equicord/Equibop/releases) page
-
-OR
-
-Check The Downloads from the [website](https://equibop.org/install)
-
-### Linux
-
-[![Equibop](https://img.shields.io/badge/AVAILABLE_ON_THE_AUR-333232?style=for-the-badge&logo=arch-linux&logoColor=0F94D2&labelColor=%23171717)](https://aur.archlinux.org/packages?O=0&K=equibop)
-<br>
-<!-- <a href="https://flathub.org/apps/io.github.equicord.equibop">
-  <img src="https://flathub.org/api/badge?svg" alt="Download on Flathub" style="width:220px; height:auto;">
-</a> -->
-
-#### Community packages
-
-Below you can find unofficial packages created by the community. They are not officially supported by us, so before reporting issues, please first confirm the issue also happens on official builds. When in doubt, consult with their packager first. The AppImage should work on any distro that supports them, so I recommend you just use that instead!
-
-- Arch Linux: [Equibop on the Arch user repository](https://aur.archlinux.org/packages?K=equibop)
-- Void Linux: [Equibop on the Void repository](https://void.creations.works/)
-- NixOS: `nix-shell -p equibop`
-
-## Building from Source
-
-You need to have the following dependencies installed:
-- [Git](https://git-scm.com/downloads)
-- [Bun](https://bun.sh)
-
-Packaging will create builds in the dist/ folder
+Needs [bun](https://bun.sh).
 
 ```sh
-git clone https://github.com/Equicord/Equibop
-cd Equibop
-
-# Install Dependencies
 bun install
-
-# Either run it without packaging
-bun start
-
-# Or package (will build packages for your OS)
-bun package
-
-# Or only build the Linux Pacman package
-bun package --linux pacman
-
-# Or package to a directory only
-bun package:dir
+bun run start          # run from source
+bun run package        # installers into dist/
 ```
 
-## Building LibVesktop from Source
+Pushing a `v*` tag builds Windows and Linux installers on GitHub Actions and publishes them as a release.
 
-This is a small C++ helper library Equibop uses on Linux to emit D-Bus events. By default, prebuilt binaries for x64 and arm64 are used.
+## Upstream
 
-If you want to build it from source:
-1. Install build dependencies:
-    - Debian/Ubuntu: `apt install build-essential python3 curl pkg-config libglib2.0-dev`
-    - Fedora: `dnf install @c-development @development-tools python3 curl pkgconf-pkg-config glib2-devel`
-2. Run `bun buildLibVesktop`
-3. From now on, building Equibop will use your own build
+`upstream` is Equicord/Equibop; merge it in to stay current. The only intentional differences are the branding, the download URL
+in `src/main/utils/vencordLoader.ts`, and the removal of Equicord's release-side workflows.
